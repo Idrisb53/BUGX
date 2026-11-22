@@ -20,6 +20,10 @@ All notable changes to BUGX are documented here. The format is based on
 - `.gitignore` now also excludes real program profiles, logs, temporary and OS files.
 - Package metadata: license, author, keywords and classifiers in `pyproject.toml`.
 
+### Fixed
+- Target prompt now shows its suggested default (`Target URL/domain [example.com]:`). Rich was
+  treating the bracketed value as markup and hiding it. Regression test added.
+
 ### Removed (from version control only, files kept locally)
 - Local scan output, real program profiles, legacy `cli_backup.py`,
   `config/default.yaml`, `test_scope_engine.py` (ported to

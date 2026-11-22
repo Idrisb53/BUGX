@@ -151,3 +151,11 @@ def test_doctor_runs(workspace):
 def test_execute_recon_without_session_is_fail_closed(workspace, capsys):
     cli.execute_recon_technique("4", "example.com", "x.yaml", session=None)
     assert "No authorized session" in capsys.readouterr().out
+
+
+def test_target_prompt_shows_suggestion(workspace):
+    """The default target must be visible in the prompt (not swallowed as Rich markup)."""
+    result = run(["1", "1", "1", "YES", "", "0"])
+    assert result.exit_code == 0, result.output
+    assert "Target URL/domain [example.com]:" in result.output
+    assert "Scope status: IN_SCOPE" in result.output

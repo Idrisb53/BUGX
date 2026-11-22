@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 
 import typer
 from rich.console import Console
+from rich.markup import escape
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
@@ -543,7 +544,7 @@ def select_target(profile: dict) -> str:
 
     for _ in range(3):
         value = console.input(
-            f"\n[bold bright_yellow]Target URL/domain [{suggestion or 'required'}]: [/bold bright_yellow]"
+            f"\n[bold bright_yellow]Target URL/domain {escape('[' + (suggestion or 'required') + ']')}: [/bold bright_yellow]"
         ).strip() or suggestion
 
         if not value:

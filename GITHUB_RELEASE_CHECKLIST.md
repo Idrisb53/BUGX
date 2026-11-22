@@ -33,7 +33,8 @@ Status of the public-release preparation. ✅ done and verified · ⬜ open (nee
 
 ## 3. Application changes
 
-Only one, as approved: `src/bugx/cli.py:29` `DEVELOPER = "IDRIS4HACK"` (banner and About screen).
+1. `src/bugx/cli.py:29` `DEVELOPER = "IDRIS4HACK"` (banner and About screen), as approved.
+2. `src/bugx/cli.py` `select_target`: escape the suggested target so the prompt shows it (bug fix, as requested).
 The workflow, modules and UI are unchanged.
 
 ## 4. Implemented vs. planned
@@ -44,7 +45,7 @@ The workflow, modules and UI are unchanged.
 
 ## 5. Known issues (not fixed, since that would change the app)
 
-- **Target prompt hides its suggestion.** `Target URL/domain [www.example.com]:` renders as `Target URL/domain :` because Rich treats `[...]` as markup (`cli.py`, `select_target`). Pressing Enter still uses the suggestion. Fix: `rich.markup.escape()` around the suggestion.
+- ~~Target prompt hid its suggestion~~: fixed (suggestion escaped, regression test added).
 - `ruff check` reports 119 style findings (none functional). CI does not run ruff.
 - Test fixtures and one docstring use real public program names (Deriv, Flipkart, Infomaniak) as offline sample strings. No scan data. Optional clean-up.
 
