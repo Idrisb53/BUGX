@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-label="BUGX - Bug Bounty Automation - Developed by IDRIS TALODAWALA - Find. Analyze. Validate. Report.">
+  <title>BUGX - Bug Bounty Automation</title>
+  <rect x="0" y="0" width="1280" height="300" rx="18" fill="#0c0c0c"/>
+  <rect x="10" y="10" width="1260" height="280" rx="12" fill="none" stroke="#ffff3c" stroke-width="3"/>
+
+  <!-- ASCII logo (same as the BUGX terminal banner) -->
+  <g font-family="DejaVu Sans Mono, Menlo, Consolas, 'Liberation Mono', monospace" font-size="30" font-weight="700" fill="#ffff3c">
+    <text x="60" y="88">&#160;____&#160;&#160;&#160;_&#160;&#160;&#160;_&#160;&#160;&#160;____&#160;__&#160;&#160;__</text>
+    <text x="60" y="124">|&#160;__&#160;)&#160;|&#160;|&#160;|&#160;|&#160;/&#160;___|\&#160;\/&#160;/</text>
+    <text x="60" y="160">|&#160;&#160;_&#160;\&#160;|&#160;|&#160;|&#160;||&#160;|&#160;&#160;_&#160;&#160;\&#160;&#160;/</text>
+    <text x="60" y="196">|&#160;|_)&#160;||&#160;|_|&#160;||&#160;|_|&#160;|&#160;/&#160;&#160;\</text>
+    <text x="60" y="232">|____/&#160;&#160;\___/&#160;&#160;\____|/_/\_\</text>
+  </g>
+
+  <line x1="600" y1="60" x2="600" y2="240" stroke="#ffff3c" stroke-width="2" opacity="0.6"/>
+
+  <g font-family="DejaVu Sans Mono, Menlo, Consolas, 'Liberation Mono', monospace" font-weight="700">
+    <text x="640" y="110" font-size="32" fill="#ffffff" letter-spacing="5">BUG BOUNTY AUTOMATION</text>
+    <text x="640" y="162" font-size="26" fill="#ffff3c" letter-spacing="2">DEVELOPED BY IDRIS TALODAWALA</text>
+    <text x="640" y="212" font-size="22" fill="#ffffff" letter-spacing="1">FIND . ANALYZE . VALIDATE . REPORT</text>
+  </g>
+</svg>

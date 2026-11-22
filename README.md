@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/01-startup-banner.png" alt="BUGX startup banner" width="720">
+<img src="assets/banner.svg" alt="BUGX - Bug Bounty Automation - Developed by IDRIS TALODAWALA - Find. Analyze. Validate. Report." width="100%">
 
 # BUGX
 
