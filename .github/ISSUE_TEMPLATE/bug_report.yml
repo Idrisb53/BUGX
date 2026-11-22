@@ -1,0 +1,93 @@
+name: Bug report
+description: Something in BUGX does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Remove target names, tokens, cookies and scan output** before posting.
+        Security vulnerabilities in BUGX (e.g. a scope bypass) must be reported privately. See SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: BUGX version
+      description: Output of `bugx version`
+      placeholder: BUGX v1.2.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Kali Linux, Debian, Ubuntu, Other Linux, macOS, Windows, WSL]
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12.3"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Installation / startup
+        - Platform / program configuration
+        - Scope validation
+        - Reconnaissance
+        - Enumeration
+        - Vulnerability Analysis
+        - Safe Validation
+        - Report Generator
+        - System Health / doctor
+        - Browser inspection (Playwright MCP)
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: External tool and version (if relevant)
+      placeholder: "nuclei 3.8.0"
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use example.com in profiles and commands.
+      placeholder: |
+        1. bugx
+        2. Platform 5, select example profile
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour / error output
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: "`bugx doctor` output"
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I removed target names, credentials and scan data from this report.
+          required: true
+        - label: This is not a security vulnerability in BUGX (those go through SECURITY.md).
+          required: true

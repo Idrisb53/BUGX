@@ -1,0 +1,53 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    name: pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install BUGX with dev extras
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: CLI smoke test
+        run: |
+          bugx version
+          bugx --help
+          bugx scope-check www.example.com docs/examples/example-profile.yaml
+          ! bugx scope-check admin.example.com docs/examples/example-profile.yaml
+
+      # Unit/integration tests only: every external tool is mocked.
+      # The e2e suite needs real security tools and is run locally (pytest -m e2e).
+      - name: Run tests
+        env:
+          BUGX_OUTPUT_DIR: ${{ runner.temp }}/bugx-output
+        run: pytest -m "not e2e" -q

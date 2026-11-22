@@ -1,0 +1,40 @@
+# Example BUGX program profile (mock data – example.com is a reserved domain).
+program:
+  id: example-custom
+  name: Example
+  platform: custom
+  program_url: https://www.example.com
+  policy_url: https://www.example.com/security-policy
+authorization:
+  user_confirmed: true
+  policy_reviewed: true
+  confirmation_date: '2026-11-21'
+  evidence_url: https://www.example.com/security-policy
+scope:
+  assets:
+  - type: domain
+    value: example.com
+    match: exact
+    eligible: true
+  - type: domain
+    value: '*.example.com'
+    match: wildcard
+    eligible: true
+  - type: url
+    value: https://api.example.com/v1/*
+    match: exact
+    eligible: true
+  excluded_assets:
+  - type: domain
+    value: admin.example.com
+    match: exact
+  - type: url
+    value: https://api.example.com/v1/private/*
+    match: exact
+policy:
+  required_headers:
+    X-HackerOne-Research: your_username
+  user_agent: ''
+  rate_limit: 2
+  concurrency: 2
+  automated_scanning: false

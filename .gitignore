@@ -1,0 +1,79 @@
+# ---------------------------------------------------------------
+# Python / virtual environments
+# ---------------------------------------------------------------
+.venv/
+venv/
+env/
+.bugx_venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+pip-wheel-metadata/
+
+# ---------------------------------------------------------------
+# Test / lint caches
+# ---------------------------------------------------------------
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ---------------------------------------------------------------
+# Secrets and local environment
+# ---------------------------------------------------------------
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+cookies*.txt
+*.har
+
+# ---------------------------------------------------------------
+# BUGX data: NEVER commit target data
+# ---------------------------------------------------------------
+# All scan results, evidence, findings, reports and logs
+output/
+reports/
+# Your real program profiles (scope, authorization, request headers)
+config/programs/**
+!config/programs/.gitkeep
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# ---------------------------------------------------------------
+# Logs and temporary files
+# ---------------------------------------------------------------
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+
+# ---------------------------------------------------------------
+# Local / legacy files kept out of the public repo
+# ---------------------------------------------------------------
+cli_backup.py
+test_scope_engine.py
+config/default.yaml
+BUGX_DEVELOPMENT_AUDIT.md
+GITHUB_RELEASE_AUDIT.md
+
+# ---------------------------------------------------------------
+# OS / editor files
+# ---------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

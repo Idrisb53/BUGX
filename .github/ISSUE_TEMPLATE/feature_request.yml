@@ -1,0 +1,45 @@
+name: Feature request
+description: Suggest a new tool adapter, module feature or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that BUGX does not support today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: For a new tool, include its name, link, and the exact safe command line you would use.
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - Reconnaissance
+        - Enumeration
+        - Vulnerability Analysis
+        - Safe Validation
+        - Report Generator
+        - Program configuration / scope
+        - CLI / UI
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety considerations
+      description: Does it send traffic to targets? Can it honour required headers and rate limits? Could it be destructive?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

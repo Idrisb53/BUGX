@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bugx-cli"
+dynamic = ["version"]
+description = "BUGX - Bug Bounty Automation Framework by Idris4hack"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "IDRIS4HACK" }]
+keywords = ["bug-bounty", "security", "reconnaissance", "penetration-testing", "cli", "scope"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Information Technology",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+]
+dependencies = [
+    "typer",
+    "rich",
+    "pydantic",
+    "pyyaml",
+    "jinja2"
+]
+
+[project.optional-dependencies]
+browser = ["mcp>=1.0"]
+dev = ["pytest>=8", "ruff"]
+
+[project.scripts]
+bugx = "bugx.cli:app"
+
+[tool.setuptools.dynamic]
+version = {attr = "bugx.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"bugx.reporting" = ["templates/*.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["e2e: real tools against a local mock target (no external traffic)"]

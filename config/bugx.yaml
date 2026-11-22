@@ -1,0 +1,40 @@
+# ==========================================
+# BUGX GLOBAL SETTINGS
+# Values here override the built-in defaults in src/bugx/core/config.py.
+# Per-program limits/headers belong in the program profile `policy:` block.
+# ==========================================
+
+defaults:
+  timeout: 600          # seconds per tool run (tools may override)
+  rate_limit: 5         # requests/second when a profile has no policy
+  concurrency: 5
+  version_timeout: 20
+
+wordlists:
+  directories:          # first existing file is used (FFUF, Feroxbuster)
+    - /usr/share/seclists/Discovery/Web-Content/common.txt
+    - /usr/share/wordlists/dirb/common.txt
+  api_routes: ""        # Kiterunner .kite or .txt routes file
+
+nuclei:                 # explicit SAFE template selection
+  templates: []         # optional explicit template paths (overrides tags)
+  tags: [exposure, misconfig, tech, ssl]
+  exclude_tags: [dos, fuzz, fuzzing, intrusive, bruteforce, brute-force, default-login, rce, sqli, osint, token-spray]
+  severity: [info, low, medium, high, critical]
+
+semgrep:
+  config: p/security-audit
+
+playwright_mcp:
+  command: [npx, -y, "@playwright/mcp@0.0.86"]
+  executable_path: ""   # leave empty to auto-detect chromium/chrome/edge
+  headless: true
+
+# Per-tool overrides, e.g. Windows paths:
+# tools:
+#   ffuf:
+#     path: C:\tools\ffuf.exe
+#     timeout: 1200
+#   cloudlist:
+#     provider_config: ~/.config/cloudlist/provider-config.yaml
+tools: {}

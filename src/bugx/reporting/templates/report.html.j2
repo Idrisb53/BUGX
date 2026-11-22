@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+<style>
+  :root { --ink:#1d1d1f; --muted:#5f6368; --line:#e2e2e2; --accent:#b8860b; --bg:#ffffff; --panel:#fafaf7;
+          --crit:#7b1fa2; --high:#c62828; --med:#ef6c00; --low:#2e7d32; --info:#546e7a; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 -apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { border-bottom: 4px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; }
+  h1 { margin: 0 0 4px; font-size: 26px; } h2 { margin-top: 36px; border-bottom:1px solid var(--line); padding-bottom:6px; font-size:20px; }
+  h3 { margin: 0 0 8px; font-size: 17px; }
+  .muted { color: var(--muted); }
+  table { width:100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 14px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align: top; word-break: break-word; }
+  th { width: 200px; color: var(--muted); font-weight: 600; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; background: var(--panel); padding: 1px 4px; border-radius: 3px; word-break: break-all; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; }
+  .tile { background: var(--panel); border:1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .tile b { display:block; font-size: 22px; }
+  .finding { border:1px solid var(--line); border-left: 6px solid var(--info); border-radius: 8px; padding: 16px; margin: 16px 0; page-break-inside: avoid; }
+  .sev { display:inline-block; color:#fff; border-radius: 4px; padding: 1px 8px; font-size: 12px; font-weight: 700; }
+  .Critical { --c: var(--crit); } .High { --c: var(--high); } .Medium { --c: var(--med); } .Low { --c: var(--low); } .Informational { --c: var(--info); }
+  .finding.Critical, .finding.High, .finding.Medium, .finding.Low, .finding.Informational { border-left-color: var(--c); }
+  .sev.Critical, .sev.High, .sev.Medium, .sev.Low, .sev.Informational { background: var(--c); }
+  .notice { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+  @media print { main { padding: 0; } h2 { page-break-after: avoid; } }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>{{ title }}</h1>
+  <div class="muted">Generated {{ generated_at }} · BUGX v{{ bugx_version }} · IDRIS4HACK</div>
+</header>
+
+<table>
+  <tr><th>Program</th><td>{{ program.name }} (<code>{{ program.id }}</code>)</td></tr>
+  <tr><th>Platform</th><td>{{ program.platform }}</td></tr>
+  <tr><th>Target</th><td><code>{{ target }}</code></td></tr>
+  <tr><th>Policy</th><td>{{ program.policy_url }}</td></tr>
+</table>
+
+<h2>Scope and authorization</h2>
+<table>
+  <tr><th>Profile confirmation</th><td>user_confirmed={{ authorization.profile_confirmation.user_confirmed }}, policy_reviewed={{ authorization.profile_confirmation.policy_reviewed }} {{ authorization.profile_confirmation.confirmation_date or "" }}</td></tr>
+  <tr><th>Session authorization</th><td>{{ authorization.confirmed_at or "not recorded" }}</td></tr>
+  <tr><th>In-scope assets</th><td>{% for a in scope_assets %}<code>{{ a.value }}</code> ({{ a.type }}, {{ a.match }}){% if not loop.last %}<br>{% endif %}{% endfor %}</td></tr>
+  <tr><th>Excluded assets</th><td>{% for a in scope_exclusions %}<code>{{ a.value }}</code>{% if not loop.last %}<br>{% endif %}{% else %}none listed{% endfor %}</td></tr>
+</table>
+
+<h2>Executive summary</h2>
+{% if findings %}
+<p>{{ findings|length }} finding(s) recorded, {{ validated_count }} validated. Findings not marked <em>Validated</em> are unconfirmed scanner leads.</p>
+<div class="grid">
+{% for s, n in severity_counts.items() %}<div class="tile {{ s }}"><span class="sev {{ s }}">{{ s }}</span><b>{{ n }}</b></div>{% endfor %}
+</div>
+{% else %}
+<p class="notice"><strong>No vulnerabilities were identified</strong> in the saved results for this program. No sample or placeholder findings are included.</p>
+{% endif %}
+
+<h2>Assessment methodology</h2>
+<ul>{% for m in methodology %}<li>{{ m }}</li>{% endfor %}</ul>
+
+<h2>Tools used</h2>
+<ul>{% for t in tools %}<li>{{ t.name }} {{ t.version }}</li>{% else %}<li>No successful tool executions recorded.</li>{% endfor %}</ul>
+
+<h2>Attack surface summary</h2>
+<div class="grid">
+  <div class="tile">In scope<b>{{ attack_surface.in_scope|length }}</b></div>
+  <div class="tile">Out of scope (not tested)<b>{{ attack_surface.out_of_scope|length }}</b></div>
+  <div class="tile">Unverified (not tested)<b>{{ attack_surface.unverified|length }}</b></div>
+</div>
+
+{% for heading, rows in [("Reconnaissance results", recon), ("Enumeration results", enumeration), ("Vulnerability analysis runs", analysis)] %}
+<h2>{{ heading }}</h2>
+{% if rows %}
+<table>
+  <tr><th style="width:auto">Tool</th><th style="width:auto">Status</th><th style="width:auto">Results</th><th style="width:auto">In scope</th><th style="width:auto">Time</th></tr>
+  {% for r in rows %}<tr><td>{{ r.tool }}</td><td>{{ r.status }}</td><td>{{ r.results }}</td><td>{{ r.in_scope }}</td><td>{{ r.timestamp }}</td></tr>{% endfor %}
+</table>
+{% else %}<p class="muted">None recorded.</p>{% endif %}
+{% endfor %}
+
+<h2>Vulnerability findings</h2>
+{% for f in findings %}
+<section class="finding {{ f.severity }}">
+  <h3><span class="sev {{ f.severity }}">{{ f.severity }}</span> {{ f.finding_id }} – {{ f.title }}</h3>
+  <table>
+    <tr><th>Confidence</th><td>{{ f.confidence }}</td></tr>
+    <tr><th>Validation status</th><td>{{ f.validation_status }}</td></tr>
+    <tr><th>Affected URL</th><td><code>{{ f.url }}</code></td></tr>
+    <tr><th>Method / parameter</th><td>{{ f.method }} / {{ f.parameter or "–" }}</td></tr>
+    <tr><th>Category</th><td>{{ f.category }}</td></tr>
+    <tr><th>OWASP Top 10</th><td>{{ f.owasp or "–" }}</td></tr>
+    <tr><th>OWASP API Top 10</th><td>{{ f.owasp_api or "–" }}</td></tr>
+    <tr><th>CVSS</th><td>{% if f.cvss_score is not none %}{{ f.cvss_score }} <code>{{ f.cvss_vector }}</code>{% else %}not scored (insufficient evidence){% endif %}</td></tr>
+    <tr><th>Description</th><td>{{ f.description or "–" }}</td></tr>
+    <tr><th>Steps to reproduce</th><td>{% if f.reproduction_steps %}<ol>{% for s in f.reproduction_steps %}<li>{{ s }}</li>{% endfor %}</ol>{% else %}<em>Complete during Safe Validation.</em>{% endif %}</td></tr>
+    <tr><th>Evidence</th><td>{% for e in f.evidence %}<code>{{ e }}</code><br>{% else %}none{% endfor %}</td></tr>
+    <tr><th>Impact</th><td>{{ f.impact or "To be assessed during validation." }}</td></tr>
+    <tr><th>Remediation</th><td>{{ f.remediation or "–" }}</td></tr>
+    <tr><th>References</th><td>{% for r in f.references %}{{ r }}<br>{% else %}–{% endfor %}</td></tr>
+  </table>
+</section>
+{% else %}
+<p class="notice">No vulnerabilities were identified.</p>
+{% endfor %}
+
+<h2>Limitations</h2>
+<ul>{% for l in limitations %}<li>{{ l }}</li>{% endfor %}</ul>
+
+<h2>Final assessment summary</h2>
+<p>{% if findings %}{{ validated_count }} validated finding(s) out of {{ findings|length }} recorded across {{ scan_count }} scan(s).{% else %}{{ scan_count }} scan(s) were executed; no vulnerabilities were identified.{% endif %}</p>
+</main>
+</body>
+</html>
